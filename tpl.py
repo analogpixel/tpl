@@ -22,10 +22,17 @@ def apply_config(config_name):
 
     # loop through all the variables we need to ask about
     for ask in config['ask']:
-        line = input("value for {}:".format(ask))
-        config['vars'][ask] = line.strip()
+        if ask['name'] in config['vars']:
+            line = input("{}({}):".format( ask['description'], config['vars'][ask['name']] ))
+            if line != "":
+                config['vars'][ ask['name'] ] = line.strip()
+        else:
+            line = input("{}():".format( ask['description'] ))
+            if line == "":
+                print("No input given, and no default; exiting.")
+                quit()
 
-    print(config['vars'])
+    # print(config['vars'])
     for directives in config['files']:
         file_name = Template(directives['file']).render( **config['vars'])  
         dtype = directives['type']

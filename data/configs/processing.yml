@@ -6,8 +6,10 @@ vars:
    data_dir: True
    name: "default_sketch"
 ask:
-  - "size" 
-  - "name"
+  - name: "size" 
+    description: "size of sketch, ex: 300,300"
+  - name: "name"
+    description: "name of sketch"
 files:
   - name: "main directory"
     file: "{{name}}"
