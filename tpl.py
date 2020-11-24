@@ -6,7 +6,9 @@ TEMPLATE_DIR = "./data/templates"
 import argparse
 import glob
 import yaml
+import os
 from jinja2 import Template
+import readline
 
 ## Parser Config
 parser = argparse.ArgumentParser()
@@ -17,9 +19,35 @@ parser_list = subparser.add_parser('list', help='list templates')
 
 def apply_config(config_name):
     config = get_configs(config_name)[0]
+
+    # loop through all the variables we need to ask about
+    for ask in config['ask']:
+        line = input("value for {}:".format(ask))
+        config['vars'][ask] = line.strip()
+
     print(config['vars'])
     for directives in config['files']:
-        file_name = Template(directives['file']).render( **config['vars'])  )
+        file_name = Template(directives['file']).render( **config['vars'])  
+        dtype = directives['type']
+        dname = directives['name']
+
+        if "when" in directives:
+            when_value = Template(directives['when']).render( **config['vars'])  == "True" 
+            # print( "when:", when_value , type(when_value) , when_value == False)
+            # if this is False, then skip this directive
+            if when_value == False:
+                continue
+
+        if dtype == 'directory':
+            if not os.path.exists(file_name):
+                os.mkdir(file_name)
+        elif dtype == 'template':
+            template = Template(directives['template']).render( **config['vars']) 
+            template_path = "{}/{}".format(TEMPLATE_DIR, template)
+            rendered_content = Template( open(template_path).read()).render( **config['vars'])
+            with open(file_name,"w") as f:
+                f.write(rendered_content)
+
 
 def get_configs(file_name=None):
     """

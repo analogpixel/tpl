@@ -3,7 +3,7 @@ name: processing
 description: create a processing workspace
 vars:
    size: "800,800"
-   data_dir: false
+   data_dir: True
    name: "default_sketch"
 ask:
   - "size" 
@@ -12,6 +12,10 @@ files:
   - name: "main directory"
     file: "{{name}}"
     type: "directory"
+  - name: "data directory"
+    file: "{{name}}/data"
+    type: "directory"
+    when: "{{ data_dir == True }}"
   - name: "main sketch file"
     file: "{{name}}/{{name}}.pde"
     type: "template"
