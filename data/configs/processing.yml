@@ -1,0 +1,19 @@
+---
+name: processing 
+description: create a processing workspace
+vars:
+   size: "800,800"
+   data_dir: false
+   name: "default_sketch"
+ask:
+  - "size" 
+  - "name"
+files:
+  - name: "main directory"
+    file: "{{name}}"
+    type: "directory"
+  - name: "main sketch file"
+    file: "{{name}}/{{name}}.pde"
+    type: "template"
+    template: "processing_sketch.jinja"
+
