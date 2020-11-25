@@ -14,12 +14,12 @@ vars:
     default: "default_sketch"
     ask: true
     description: "name of the sketch"
-files:
+steps:
   - name: "main directory"
-    file: "{{name}}"
+    directory: "{{name}}"
     type: "directory"
   - name: "data directory"
-    file: "{{name}}/data"
+    directory: "{{name}}/data"
     type: "directory"
     when: "{{ data_dir == True }}"
   - name: "main sketch file"
@@ -27,7 +27,7 @@ files:
     type: "template"
     template: "processing_sketch.jinja"
   - name: "open the sketch"
-    file: "open {{name}}/{{name}}.pde"
+    command: "open {{name}}/{{name}}.pde"
     type: "sh"
 
 

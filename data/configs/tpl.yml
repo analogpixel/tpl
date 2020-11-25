@@ -1,0 +1,19 @@
+---
+name: tpl 
+description: create a tpl config
+vars:
+  - name: "name"
+    default: "default_tpl"
+    ask: true
+    description: "name of template"
+  - name: "description"
+    default: "description of tpl"
+    ask: true
+    description: "description of the tpl"
+steps:
+  - name: "the tpl config file"
+    file: "{{name}}.yml"
+    type: "template"
+    template: "tpl.jinja"
+
+

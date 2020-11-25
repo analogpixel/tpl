@@ -1,0 +1,20 @@
+---
+name: {{ name }}
+description: {{ description }}
+vars:
+  - name: ""
+    default: ""
+    ask: true
+    description: ""
+steps:
+  - name: "create a directory"
+    directory: ""
+    type: "directory"
+  - name: "render a template"
+    file: "{{name}}/{{name}}.pde"
+    type: "template"
+    template: "processing_sketch.jinja"
+  - name: "run a command"
+    command: ""
+    type: "sh"
+
