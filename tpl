@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-CONFIG_DIR = "./data/configs"
-TEMPLATE_DIR = "./data/templates"
 
 import argparse
 import glob
@@ -9,6 +7,9 @@ import yaml
 import os
 from jinja2 import Template
 import readline
+
+CONFIG_DIR = os.path.expanduser("~/.tpl/data/configs")
+TEMPLATE_DIR = os.path.expanduser("~/.tpl/data/templates")
 
 ## Parser Config
 parser = argparse.ArgumentParser()
@@ -19,27 +20,28 @@ parser_list = subparser.add_parser('list', help='list templates')
 
 def apply_config(config_name):
     config = get_configs(config_name)[0]
+    config_vars = {}
 
     # loop through all the variables we need to ask about
-    for ask in config['ask']:
-        if ask['name'] in config['vars']:
-            line = input("{}({}):".format( ask['description'], config['vars'][ask['name']] ))
-            if line != "":
-                config['vars'][ ask['name'] ] = line.strip()
-        else:
-            line = input("{}():".format( ask['description'] ))
+    for var in config['vars']:
+        if var['ask']:
+            line = input("{}({}):".format( var['description'], var['default']))
             if line == "":
-                print("No input given, and no default; exiting.")
-                quit()
+                config_vars[ var['name'] ] = var['default']
+            else:
+                config_vars[ var['name'] ] = line.strip()
+        else:
+            config_vars[ var['name'] ] = var['default']
+
 
     # print(config['vars'])
     for directives in config['files']:
-        file_name = Template(directives['file']).render( **config['vars'])  
+        file_name = Template(directives['file']).render( **config_vars )  
         dtype = directives['type']
         dname = directives['name']
 
         if "when" in directives:
-            when_value = Template(directives['when']).render( **config['vars'])  == "True" 
+            when_value = Template(directives['when']).render( **config_vars )  == "True" 
             # print( "when:", when_value , type(when_value) , when_value == False)
             # if this is False, then skip this directive
             if when_value == False:
@@ -47,11 +49,13 @@ def apply_config(config_name):
 
         if dtype == 'directory':
             if not os.path.exists(file_name):
+                print("Creating Directory:{}".format(file_name))
                 os.mkdir(file_name)
         elif dtype == 'template':
-            template = Template(directives['template']).render( **config['vars']) 
+            print("Creating file:{}".format(file_name))
+            template = Template(directives['template']).render( **config_vars) 
             template_path = "{}/{}".format(TEMPLATE_DIR, template)
-            rendered_content = Template( open(template_path).read()).render( **config['vars'])
+            rendered_content = Template( open(template_path).read()).render( **config_vars )
             with open(file_name,"w") as f:
                 f.write(rendered_content)
 

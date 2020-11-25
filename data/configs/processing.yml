@@ -2,14 +2,18 @@
 name: processing 
 description: create a processing workspace
 vars:
-   size: "800,800"
-   data_dir: True
-   name: "default_sketch"
-ask:
-  - name: "size" 
-    description: "size of sketch, ex: 300,300"
+  - name: "size"
+    default: "800,800"
+    ask: true
+    description: "size of sketch; ex. 800,800"
+  - name: "data_dir"
+    ask: false
+    default: True
+    description: "should we create a datadir"
   - name: "name"
-    description: "name of sketch"
+    default: "default_sketch"
+    ask: true
+    description: "name of the sketch"
 files:
   - name: "main directory"
     file: "{{name}}"
