@@ -59,7 +59,9 @@ def apply_config(config_name):
             rendered_content = Template( open(template_path).read()).render( **config_vars )
             with open(file_name,"w") as f:
                 f.write(rendered_content)
-
+        elif dtype == 'sh':
+            print("Running:", file_name)
+            os.system( file_name)
 
 def get_configs(file_name=None):
     """

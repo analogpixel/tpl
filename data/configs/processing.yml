@@ -26,4 +26,8 @@ files:
     file: "{{name}}/{{name}}.pde"
     type: "template"
     template: "processing_sketch.jinja"
+  - name: "open the sketch"
+    file: "open {{name}}/{{name}}.pde"
+    type: "sh"
+
 
