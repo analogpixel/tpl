@@ -1,0 +1,14 @@
+---
+- name: {{ name }}
+  hosts: ""
+  {% if run_local %}
+  gather_facts: no
+  connection: local
+  {% endif %}
+  {% if include_env %}
+  environment:
+     KEY: "VAR"
+  {% endif %}
+  tasks:
+    - name: "task1"
+

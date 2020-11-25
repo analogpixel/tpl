@@ -1,0 +1,25 @@
+---
+name: ansible_playbook
+description: simple ansible playbook
+vars:
+  - name: "name"
+    default: "default_ansible_playbook"
+    ask: true
+    description: "name of the playbook"
+  - name: "run_local"
+    default: False
+    ask: True
+    description: "Will this playbook be run just localy"
+  - name: "hosts"
+    default: "ALL"
+    ask: True
+    description: "host pattern to use"
+  - name: "include_env"
+    default: False
+    ask: True
+    description: "include the env section"
+steps:
+  - name: "render a template"
+    file: "{{name}}.yml"
+    type: "template"
+    template: "ansible_playbook.jinja"
