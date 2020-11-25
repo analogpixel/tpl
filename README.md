@@ -1,4 +1,4 @@
-tpl is a tool to create projects based on a templated config, because I got sick of writing broiler plate code over
+tpl is a tool to create projects based on a templated config, because I got sick of writing boilerplate code over
 and over, and all the other tools I've found that do something like this seem huge and bloated.  
 
 ## Installation 
