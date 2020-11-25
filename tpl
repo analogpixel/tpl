@@ -22,7 +22,8 @@ def apply_config(config_name):
     config = get_configs(config_name)[0]
     config_vars = {}
 
-    # loop through all the variables we need to ask about
+    # loop through all the variables and figure out what to do with them
+    # TODO : pass var overrides in from command line -e var=sdf
     for var in config['vars']:
         if var['ask']:
             line = input("{}({}):".format( var['description'], var['default']))
@@ -33,8 +34,8 @@ def apply_config(config_name):
         else:
             config_vars[ var['name'] ] = var['default']
 
-
     # print(config['vars'])
+    # process all the directives in the files section serialy in order
     for directives in config['files']:
         file_name = Template(directives['file']).render( **config_vars )  
         dtype = directives['type']
