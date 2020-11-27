@@ -15,6 +15,10 @@ vars:
     ask: true
     description: "name of the sketch"
 steps:
+  - name: "get today"
+    register: today
+    type: sh
+    command: date
   - name: "main directory"
     directory: "{{name}}"
     type: "directory"

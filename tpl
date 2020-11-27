@@ -7,7 +7,7 @@ import yaml
 import os
 from jinja2 import Template
 import readline
-
+import subprocess 
 CONFIG_DIR = os.path.expanduser("~/.tpl/data/configs")
 TEMPLATE_DIR = os.path.expanduser("~/.tpl/data/templates")
 
@@ -63,7 +63,10 @@ def apply_config(config_name):
         elif dtype == 'sh':
             command = Template(directives['command']).render( **config_vars )  
             print("Running:", command )
-            os.system( command )
+            output = subprocess.check_output(command, shell=True, text=True)
+            output = output.strip()
+            if "register" in directives:
+                config_vars[ directives['register'].strip() ] = output
 
 def get_configs(file_name=None):
     """
