@@ -8,6 +8,8 @@ import os
 from jinja2 import Template
 import readline
 import subprocess 
+import shutil
+
 CONFIG_DIR = os.path.expanduser("~/.tpl/data/configs")
 TEMPLATE_DIR = os.path.expanduser("~/.tpl/data/templates")
 
@@ -60,6 +62,12 @@ def apply_config(config_name):
             rendered_content = Template( open(template_path).read()).render( **config_vars )
             with open(file_name,"w") as f:
                 f.write(rendered_content)
+        elif dtype == 'cp':
+            file_name = Template(directives['src']).render( **config_vars )  
+            file_dest = Template(directives['dest']).render( **config_vars) 
+            src_file_path = "{}/{}".format(TEMPLATE_DIR, file_name)
+            print("copy from {} to {}".format(file_name, file_dest))
+            shutil.copy(src_file_path, file_dest)
         elif dtype == 'sh':
             command = Template(directives['command']).render( **config_vars )  
             print("Running:", command )

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# start an editor in one pane
+# and start the server running in another
+
+tmux -2 \
+	new-session -s {{name}}-dev   \; \
+	new-window -t "{{name}}-dev" -n bash "bash --login -c"  \; \
+  new-window -t "{{name}}-dev" -n bs "browser-sync start --server --directory --files \"*\""  \; \
+	select-window -t "{{name}}-dev:0"

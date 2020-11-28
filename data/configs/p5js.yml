@@ -1,0 +1,57 @@
+---
+name: p5js
+description: p5js template
+vars:
+  - name: "name"
+    default: "sample_project"
+    ask: True
+    description: "Project name"
+  - name: "sketch size"
+    default: "800,800"
+    ask: True
+    description: "default size for sketch"
+  - name: "include_tween_lib"
+    default: n
+    ask: True
+    description: "Include the tweening library (y/n)"
+  - name: "include_tmux_start"
+    default: n
+    ask: True
+    description: "Include the tmux start script (y/n)"
+steps:
+  - name: "create a directory"
+    directory: "{{ name }}"
+    type: "directory"
+  - name: "render sketch.js"
+    file: "{{name}}/sketch.js"
+    type: "template"
+    template: "p5js/sketch.js.jinja"
+  - name: "render index.html"
+    file: "{{name}}/index.html"
+    type: "template"
+    template: "p5js/index.html.jinja"
+  - name: "render p5.js"
+    src: "p5js/p5.min.js"
+    type: cp
+    dest: "{{name}}/p5.min.js"
+
+  - name: "add tween libs 1/3"
+    dest: "{{name}}/EasePack.min.js"
+    type: cp
+    src: "p5js/EasePack.min.js"
+    when: "{{ include_tween_lib == 'y' }}" 
+  - name: "add tween libs 2/3"
+    dest: "{{name}}/TimelineLite.min.js"
+    type: cp
+    src: "p5js/TimelineLite.min.js"
+    when: "{{ include_tween_lib == 'y' }}" 
+  - name: "add tween libs 3/3"
+    dest: "{{name}}/TweenLite.min.js"
+    type: cp
+    src: "p5js/TweenLite.min.js"
+    when: "{{ include_tween_lib == 'y' }}" 
+  - name: "tmux start script"
+    file: "{{name}}/starts.sh"
+    type: "template"
+    template: "p5js/starts.sh.jinja"
+    when: "{{ include_tmux_start == 'y' }}" 
