@@ -1,0 +1,30 @@
+---
+name: html
+description: html with optional javascript
+vars:
+  - name: "name"
+    default: "sample_html_project"
+    ask: true
+    description: "name of the html project"
+  - name: "include_jquery"
+    default: n
+    ask: true
+    description: "include jquery (y/n)"
+  - name: "include_bootstrap"
+    default: n
+    ask: true
+    description: "include bootstrap (y/n)"
+steps:
+  - name: "create a directory"
+    directory: "{{name}}"
+    type: "directory"
+  - name: "render a template"
+    file: "{{ name }}/index.html"
+    type: "template"
+    template: "html/index.html.jinja"
+  - name: "include jquery"
+    src: "html/jquery-3.5.1.min.js"
+    dest: "{{ name }}/js/jquery-3.5.1.min.js"
+    type: cp
+    when: "{{ include_jquery == 'y' }}"
+

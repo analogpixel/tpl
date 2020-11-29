@@ -19,9 +19,6 @@ steps:
     register: today
     type: sh
     command: date
-  - name: "main directory"
-    directory: "{{name}}"
-    type: "directory"
   - name: "data directory"
     directory: "{{name}}/data"
     type: "directory"

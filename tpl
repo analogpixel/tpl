@@ -20,6 +20,10 @@ parser_new = subparser.add_parser('new', help='create new thing')
 parser_new.add_argument('template', metavar='template', type=str, nargs=1, help='the template to create')
 parser_list = subparser.add_parser('list', help='list templates')
 
+def make_dirs(path):
+    path = os.path.dirname(path) # strip out the filename
+    os.makedirs(path, exist_ok=True)
+
 def apply_config(config_name):
     config = get_configs(config_name)[0]
     config_vars = {}
@@ -51,15 +55,17 @@ def apply_config(config_name):
 
         if dtype == 'directory':
             directory = Template(directives['directory']).render( **config_vars) 
-            if not os.path.exists(directory):
-                print("Creating Directory:{}".format(directory))
-                os.mkdir(directory)
+            print("Creating Directory:{}".format(directory))
+            os.makedirs(directory, exist_ok=True)
         elif dtype == 'template':
             file_name = Template(directives['file']).render( **config_vars )  
             print("Creating file:{}".format(file_name))
             template = Template(directives['template']).render( **config_vars) 
             template_path = "{}/{}".format(TEMPLATE_DIR, template)
             rendered_content = Template( open(template_path).read()).render( **config_vars )
+
+            make_dirs(file_name) # make the directories where it wants to live first if needed
+
             with open(file_name,"w") as f:
                 f.write(rendered_content)
         elif dtype == 'cp':
@@ -67,6 +73,8 @@ def apply_config(config_name):
             file_dest = Template(directives['dest']).render( **config_vars) 
             src_file_path = "{}/{}".format(TEMPLATE_DIR, file_name)
             print("copy from {} to {}".format(file_name, file_dest))
+
+            make_dirs(file_dest) # make the directories where it wants to live first if needed
             shutil.copy(src_file_path, file_dest)
         elif dtype == 'sh':
             command = Template(directives['command']).render( **config_vars )  
