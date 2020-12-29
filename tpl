@@ -21,8 +21,11 @@ parser_new.add_argument('template', metavar='template', type=str, nargs=1, help=
 parser_list = subparser.add_parser('list', help='list templates')
 
 def make_dirs(path):
-    path = os.path.dirname(path) # strip out the filename
-    os.makedirs(path, exist_ok=True)
+    if path.find("/") == -1:
+        return False
+    else:
+        path = os.path.dirname(path) # strip out the filename
+        os.makedirs(path, exist_ok=True)
 
 def apply_config(config_name):
     config = get_configs(config_name)[0]

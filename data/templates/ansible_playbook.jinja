@@ -1,6 +1,7 @@
 ---
 - name: {{ name }}
-  hosts: ""
+  hosts: all
+  become: true
   {% if run_local %}
   gather_facts: no
   connection: local
