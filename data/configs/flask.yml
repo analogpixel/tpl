@@ -35,5 +35,5 @@ steps:
   - name: "make script 755"
     register: output
     type: sh
-    command: "chmod 755 {{ name }}/run.sh
+    command: "chmod 755 {{ name }}/run.sh"
 
