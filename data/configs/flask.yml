@@ -1,0 +1,39 @@
+---
+name: flask
+description: basic flask app
+vars:
+  - name: "name"
+    default: "sample_flask_app"
+    ask: true
+    description: "name of the flask app"
+  - name: "include_jquery"
+    default: n
+    ask: true
+    description: "include jquery (y/n)"
+  - name: "include_bootstrap"
+    default: n
+    ask: true
+    description: "include bootstrap (y/n)"
+steps:
+  - name: "render a template"
+    file: "{{ name }}/static/index.html"
+    type: "template"
+    template: "html/index.html.jinja"
+  - name: "include jquery"
+    src: "html/jquery-3.5.1.min.js"
+    dest: "{{ name }}/static/js/jquery-3.5.1.min.js"
+    type: cp
+    when: "{{ include_jquery == 'y' }}"
+  - name: "render the app"
+    file: "{{ name }}/main.py"
+    type: "template"
+    template: "flask.jinja"
+  - name: "render the start script"
+    file: "{{ name }}/run.sh"
+    type: "template"
+    template: "start_flask.jinja"
+  - name: "make script 755"
+    register: output
+    type: sh
+    command: "chmod 755 {{ name }}/run.sh
+
