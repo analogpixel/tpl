@@ -1,0 +1,17 @@
+bin=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
+fn={{ name }}.scad
+
+define create-part
+	$(bin) -o $(@).stl $(fn)
+endef
+
+open:
+	$(bin) $(fn)
+
+{{ name }}:
+	$(create-part) -D "_{{ name }}=true"
+
+all: {{ name }}
+
+clean:
+	rm *.stl

@@ -1,0 +1,17 @@
+---
+name: openscadmakefile
+description: Makefile for openscad project
+vars:
+  - name: "name"
+    default: "default_name"
+    ask: true
+    description: "name of the project"
+steps:
+  - name: "render a template"
+    file: "Makefile"
+    type: "template"
+    template: "openscad.makefile.jinja"
+  - name: "render a template"
+    file: "{{ name }}.scad"
+    type: "template"
+    template: "openscad.jinja"
