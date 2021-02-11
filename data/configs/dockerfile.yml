@@ -1,0 +1,13 @@
+---
+name: dockerfile
+description: dockerfile
+vars:
+  - name: "name"
+    default: "default_name"
+    ask: true
+    description: "name of the project"
+steps:
+  - name: "render a template"
+    file: "Dockerfile"
+    type: "template"
+    template: "dockerfile.jinja"

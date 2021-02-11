@@ -1,0 +1,14 @@
+FROM centos
+
+RUN yum -y install epel-release
+RUN pip install elasticsearch
+
+RUN mkdir /app
+
+COPY src/main.py  /app
+
+expose 5000
+
+WORKDIR /app
+ENTRYPOINT ["python"]
+CMD ["main.py"]
