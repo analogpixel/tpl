@@ -1,0 +1,17 @@
+---
+name: vagrant
+description: simple vagrant template
+vars:
+  - name: "name"
+    default: "sample_vm"
+    ask: true
+    description: "name of the vm"
+  - name: "image"
+    default: "bento/centos-7.4" 
+    ask: true
+    description: "image to use"
+steps:
+  - name: "render a template"
+    file: "Vagrantfile"
+    type: "template"
+    template: "vagrant.jinja"

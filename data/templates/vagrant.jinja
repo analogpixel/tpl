@@ -1,0 +1,29 @@
+$ProjectName = 'master'
+
+VAGRANTFILE_API_VERSION = "2"
+
+# vagrant plugin install vagrant-hostmanager
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+
+  config.vm.define "{{ name }}" do |server1|
+    server1.vm.box = "{{ image }}"
+    server1.vm.hostname = "{{ name }}.local.net"
+    server1.vm.network "private_network", type: "dhcp"
+    #server1.vm.network :private_network, ip: "10.0.0.15"
+
+    #server1.vm.provision "ansible" do |a|
+    #  a.playbook = "jenkins.yml"
+    #end
+
+    server1.vm.provider "virtualbox" do |v|
+      v.memory = 4024
+      v.cpus = 2
+    end
+
+  end
+
+end
