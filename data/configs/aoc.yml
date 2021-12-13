@@ -1,0 +1,24 @@
+---
+name: aoc
+description: Advent of Code
+vars:
+  - name: "day"
+    default: "00"
+    ask: True
+    description: "Day"
+steps:
+  - name: "create a directory"
+    directory: "day{{ day }}"
+    type: "directory"
+  - name: "Readme.md"
+    file: "day{{ day }}/README.md"
+    type: "template"
+    template: "aoc_readme.md"
+  - name: "input files"
+    type: sh
+    command: "touch day{{day}}/input_1.txt"
+  - name: "sample input files"
+    type: sh
+    command: "touch day{{day}}/sample_input_1.txt"
+
+
